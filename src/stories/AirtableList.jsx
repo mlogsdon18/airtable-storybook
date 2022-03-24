@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Airtable from 'airtable';
-/**
- * Primary UI component for user interaction
- */
-export const AirtableList = ({ tableId, label, ...props }) => {
+
+export const AirtableList = ({ baseId, tableName }) => {
   const [records, setRecords] = useState([])
 
   useEffect(() => {
 
-    var base = new Airtable({endpointUrl: 'https://api.airtable.com', apiKey: process.env.AIRTABLE_API_KEY}).base(tableId);  
-    base('Unify').select({
+    var base = new Airtable({endpointUrl: 'https://api.airtable.com', apiKey: process.env.AIRTABLE_API_KEY}).base(baseId);  
+    base(tableName).select({
       view: "Grid view"
     }).firstPage(function (err, records) {
       if (err) { console.error(err); return; }
@@ -20,7 +18,7 @@ export const AirtableList = ({ tableId, label, ...props }) => {
       return records;
     });
 
-  }, [tableId])
+  }, [baseId, tableName])
 
   return (
     <>
@@ -35,17 +33,17 @@ export const AirtableList = ({ tableId, label, ...props }) => {
 };
 
 Airtable.propTypes = {
-  /**
-   * The ID for the Airtable table (base) to pull from 
-   */
-   tableId: PropTypes.string.isRequired,
-  /**
-   * Button contents
-   */
-  label: PropTypes.string.isRequired,
+ /**
+  * The ID for the Airtable (base) to pull from 
+  */
+  baseId: PropTypes.string.isRequired,
+ /**
+  * The name of the Airtable table to pull from 
+  */
+  tableName: PropTypes.string.isRequired,
 };
 
 Airtable.defaultProps = {
-  tableId: '',
-  label: 'Airtable'
+  baseId: '',
+  tableName: 'Unify'
 };
