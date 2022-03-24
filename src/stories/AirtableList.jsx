@@ -6,7 +6,7 @@ import Airtable from 'airtable';
  * Primary UI component for user interaction
  */
 export const AirtableList = ({ primary, backgroundColor, size, label, ...props }) => {
-  const [records, setRecords] = useState('')
+  const [records, setRecords] = useState([])
 
   useEffect(() => {
     console.log('here')
@@ -25,7 +25,6 @@ export const AirtableList = ({ primary, backgroundColor, size, label, ...props }
     });
   }, [])
 
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
   return (
     <>
     {records.map((record) => (
